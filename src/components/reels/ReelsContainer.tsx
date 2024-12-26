@@ -1,46 +1,78 @@
-import { useState, useCallback, useEffect } from 'react';
+import { useState, useCallback } from 'react';
 import { generateReels } from '../../data/reelsData';
 import { useIntersectionObserver } from '../../hooks/useIntersectionObserver';
 import ReelCard from './ReelCard';
+import { FixedSizeList as List } from 'react-window';
+
+const PAGE_SIZE = 5;
 
 export default function ReelsContainer() {
-  const [reels, setReels] = useState(generateReels(0, 5));
+  const [reels, setReels] = useState(() => generateReels(0, PAGE_SIZE));
+  const [hasMore, setHasMore] = useState(true);
   const [activeIndex, setActiveIndex] = useState(0);
 
   const loadMoreReels = useCallback(() => {
-    const newReels = generateReels(reels.length, 5);
+    if (!hasMore) return;
+
+    const newReels = generateReels(reels.length, PAGE_SIZE);
+
+    if (newReels.length < PAGE_SIZE) setHasMore(false);
+
     setReels(prev => [...prev, ...newReels]);
-  }, [reels.length]);
+  }, [reels.length, hasMore]);
 
   const observerRef = useIntersectionObserver(loadMoreReels);
 
-  useEffect(() => {
-    const handleScroll = () => {
-      const container = document.getElementById('reels-container');
-      if (container) {
-        const index = Math.round(container.scrollTop / window.innerHeight);
+  const handleScroll = useCallback(
+    (scrollOffset: number) => {
+      const index = Math.round(scrollOffset / window.innerHeight);
+      if (index !== activeIndex) {
         setActiveIndex(index);
       }
-    };
+    },
+    [activeIndex]
+  );
 
-    const container = document.getElementById('reels-container');
-    container?.addEventListener('scroll', handleScroll);
-    return () => container?.removeEventListener('scroll', handleScroll);
-  }, []);
+  const renderReel = useCallback(
+    ({ index, style }: { index: number; style: React.CSSProperties }) => {
+      const reel = reels[index];
+      if (!reel) return null;
+
+      return (
+        <div style={style} className="snap-start">
+          <ReelCard reel={reel} isActive={index === activeIndex} />
+        </div>
+      );
+    },
+    [reels, activeIndex]
+  );
 
   return (
-    <div 
-      id="reels-container"
-      className="h-[100dvh] overflow-y-scroll snap-y snap-mandatory scrollbar-hide"
-    >
-      {reels.map((reel, index) => (
-        <ReelCard 
-          key={reel.id} 
-          reel={reel} 
-          isActive={index === activeIndex}
-        />
-      ))}
-      <div ref={observerRef} className="h-1" />
+    <div className="h-full w-full max-w-md m-auto overflow-hidden">
+      <List
+        className="overflow-y-scroll snap-y snap-mandatory scrollbar-hide"
+        height={1000}
+        itemCount={reels.length + 1}
+        itemSize={window.innerHeight}
+        width="100%"
+        onScroll={({ scrollOffset }) => handleScroll(scrollOffset)}
+      >
+        {({ index, style }) => {
+          if (index === reels.length) {
+            return hasMore ? (
+              <div ref={observerRef} style={style} className="h-16 flex items-center justify-center">
+                <p className="text-gray-500">Loading more reels...</p>
+              </div>
+            ) : (
+              <div style={style} className="h-16 flex items-center justify-center">
+                <p className="text-gray-500">No more reels!</p>
+              </div>
+            );
+          }
+
+          return renderReel({ index, style });
+        }}
+      </List>
     </div>
   );
 }
