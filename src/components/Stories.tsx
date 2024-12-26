@@ -16,6 +16,10 @@ export default function Stories() {
     }
   };
 
+  const handleStoryClick = (username: string) => {
+    navigate(`/stories/${username}`);
+  };
+
   return (
     <div className="bg-white dark:bg-gray-800 border dark:border-gray-700 rounded-lg p-4 mb-4 relative">
       {scrollPosition > 0 && (
@@ -34,7 +38,7 @@ export default function Stories() {
         {stories.map((story) => (
           <div key={story.id} className="flex flex-col items-center space-y-1 flex-shrink-0">
             <button 
-              onClick={() => navigate(`/stories/${story.username}`)}
+              onClick={() => handleStoryClick(story.username)}
               className="w-16 h-16 rounded-full p-[2px] bg-gradient-to-tr from-yellow-400 to-pink-600 hover:scale-105 transition-transform"
             >
               <img

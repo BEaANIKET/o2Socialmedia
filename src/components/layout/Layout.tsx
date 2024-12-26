@@ -1,16 +1,14 @@
-import { ReactNode } from 'react';
+import { Outlet } from 'react-router-dom';
 import Sidebar from '../Sidebar';
 
-interface LayoutProps {
-  children: ReactNode;
-}
-
-export default function Layout({ children }: LayoutProps) {
+export default function Layout() {
   return (
-    <div className="bg-gray-50 dark:bg-gray-900 min-h-screen">
+    <div className="min-h-screen bg-gray-50 dark:bg-gray-900">
       <Sidebar />
-      <main className="md:ml-16 lg:ml-64 transition-all duration-300 ease-in-out">
-        {children}
+      <main className="pl-0 md:pl-16 lg:pl-64">
+        <div className="max-w-screen-xl mx-auto">
+          <Outlet />
+        </div>
       </main>
     </div>
   );
