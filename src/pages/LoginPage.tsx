@@ -12,7 +12,7 @@ export default function LoginPage() {
 
   const handleLogin = (e: React.FormEvent) => {
     e.preventDefault();
-    // Simulate login - In a real app, this would make an API call
+
     dispatch(login({
       id: '1',
       username: 'johndoe',
