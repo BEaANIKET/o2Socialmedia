@@ -9,7 +9,7 @@ export default function Sidebar() {
     <div className="fixed bottom-0 left-0 w-full bg-white dark:bg-gray-800 border-t dark:border-gray-700 md:top-0 md:w-16 lg:w-64 md:h-screen md:border-r z-50">
       <div className="flex justify-around md:flex-col md:justify-start md:p-4 md:space-y-6">
         <div className="hidden lg:block p-4">
-          <h1 className="text-xl font-bold dark:text-white">Instagram</h1>
+          <h1 className="text-xl font-bold dark:text-white">Indimart</h1>
         </div>
         
         <NavItem to="/" icon={<Home />} label="Home" active={location.pathname === '/'} />
