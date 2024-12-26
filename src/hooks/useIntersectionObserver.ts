@@ -2,7 +2,7 @@ import { useEffect, useRef } from 'react';
 
 export function useIntersectionObserver(
   callback: () => void,
-  options = { threshold: 0.5 }
+  options = { threshold: 1 }
 ) {
   const observerRef = useRef<HTMLDivElement>(null);
 

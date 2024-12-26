@@ -28,13 +28,13 @@ export default function Suggestions() {
         <div className="flex items-center space-x-4">
           <User className="w-8 h-8 dark:text-white" />
           <div>
-            <h2 className="font-semibold dark:text-white">Welcome to Instagram</h2>
+            <h2 className="font-semibold dark:text-white">Welcome to Indimart</h2>
             <p className="text-sm text-gray-500 dark:text-gray-400">Discover people to follow</p>
           </div>
         </div>
       </div>
 
-      <div className="space-y-4">
+      {/* <div className="space-y-4">
         {suggestions.map((suggestion) => (
           <div key={suggestion.id} className="flex items-center justify-between">
             <div className="flex items-center space-x-3">
@@ -53,7 +53,8 @@ export default function Suggestions() {
             </button>
           </div>
         ))}
-      </div>
+      </div> */}
+      
     </div>
   );
 }

@@ -11,6 +11,7 @@ import Profile from './pages/Profile';
 import SearchPage from './pages/SearchPage';
 import ExplorePage from './pages/ExplorePage';
 import StoryViewer from './components/story/StoryViewer';
+import SignupPage from './pages/SignupPage';
 
 function AppContent() {
   const isDarkMode = useSelector((state: RootState) => state.theme.isDarkMode);
@@ -20,6 +21,7 @@ function AppContent() {
       <Router>
         <Routes>
           <Route path="/login" element={<LoginPage />} />
+          <Route path="/signup" element={<SignupPage />} />
           <Route path="/stories/:username" element={<StoryViewer />} />
           <Route path="/" element={<Layout />}>
             <Route index element={<Feed />} />
