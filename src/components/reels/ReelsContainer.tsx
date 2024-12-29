@@ -38,7 +38,7 @@ export default function ReelsContainer() {
     <div className="h-[100dvh] w-full max-w-md m-auto overflow-hidden">
       <div
         style={{ scrollSnapAlign: 'start', scrollBehavior: "smooth" }}
-        className="h-full scroll-container overflow-y-scroll snap-mandatory snap-y"
+        className="h-full scroll-container scrollbar-hide overflow-y-scroll snap-mandatory snap-y"
         onScroll={(e) => handleScroll(e.currentTarget.scrollTop)}
       >
         <Suspense fallback={<div>Loading reels...</div>}>
