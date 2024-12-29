@@ -82,7 +82,7 @@ export default function Post({ post }: PostProps) {
 
       <div className="relative">
         {mediaType === 'video' ? (
-          <div onDoubleClick={handleDoubleClick} className=' relative ' >
+          <div onClick={() => setIsPlay(false)} onDoubleClick={handleDoubleClick} className=' relative ' >
             <video
               ref={observerRef}
               className="w-full"
