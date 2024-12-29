@@ -1,7 +1,8 @@
 import { useEffect, useRef } from 'react';
 
 export function useIntersectionObserver(
-  callback: () => void,
+  callback: () => void = () => { },
+  callback2: () => void = () => { },
   options = { threshold: .1 }
 ) {
   const observerRef = useRef<HTMLDivElement>(null);
@@ -10,6 +11,8 @@ export function useIntersectionObserver(
     const observer = new IntersectionObserver(([entry]) => {
       if (entry.isIntersecting) {
         callback();
+      } else {
+        callback2();
       }
     }, options);
 
@@ -18,7 +21,7 @@ export function useIntersectionObserver(
     }
 
     return () => observer.disconnect();
-  }, [callback, options]);
+  }, [callback, callback2, options]);
 
   return observerRef;
 }

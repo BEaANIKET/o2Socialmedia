@@ -1,29 +1,32 @@
 import { useEffect, useRef, useState } from 'react';
 import { Heart, MessageCircle, Send, Bookmark, Music2, VideoIcon } from 'lucide-react';
 import type { Reel } from '../../data/reelsData';
+import { useIntersectionObserver } from '../../hooks/useIntersectionObserver';
 
 interface ReelCardProps {
   reel: Reel;
-  isActive: boolean;
 }
 
-export default function ReelCard({ reel, isActive }: ReelCardProps) {
+export default function ReelCard({ reel }: ReelCardProps) {
   const [isLiked, setIsLiked] = useState(false);
   const [isSaved, setIsSaved] = useState(false);
   const [localLikes, setLocalLikes] = useState(reel.likes);
+  const [isVideoPlay, setIsVideoPlay] = useState(false);
 
-  const videoRef = useRef<HTMLVideoElement>(null);
+  const videoRef = useIntersectionObserver(() => setIsVideoPlay(true), () => setIsVideoPlay(false), { threshold: 0.5 });
+
+
 
   useEffect(() => {
     if (videoRef.current) {
-      if (isActive) {
-        videoRef.current.currentTime = 0; // Reset to the start
-        videoRef.current.play(); // Play the active video
+      if (isVideoPlay) {
+        videoRef.current.currentTime = 0;
+        videoRef.current.play();
       } else {
-        videoRef.current.pause(); // Pause non-active videos
+        videoRef.current.pause();
       }
     }
-  }, [isActive]);
+  }, [isVideoPlay])
 
   const handleLike = (event: React.MouseEvent) => {
     event.stopPropagation(); // Prevent bubbling
@@ -52,15 +55,12 @@ export default function ReelCard({ reel, isActive }: ReelCardProps) {
       {/* Video */}
       <video
         ref={videoRef}
-        key={`${reel.id}-${isActive}`}
+        key={reel.id}
         src={reel.video}
         className="  w-full h-full "
-        autoPlay={isActive}
         loop
         playsInline
       />
-
-
 
       {/* Overlay */}
       <div className="absolute inset-0 bottom-12 top-0 ">

@@ -90,5 +90,55 @@ export const posts = [
     likes: 2456,
     comments: 89,
     timestamp: '6h ago'
-  }
+  },
+  {
+    id: 10,
+    username: 'mike_smith',
+    avatar: 'https://images.unsplash.com/photo-1527980965255-d3b416303d12?w=150&h=150&fit=crop',
+    image: p2,
+    caption: 'Adventure awaits! 🏔️ #hiking #outdoors',
+    likes: 2456,
+    comments: 89,
+    timestamp: '6h ago'
+  },
+  {
+    id: 11,
+    username: 'mike_smith',
+    avatar: 'https://images.unsplash.com/photo-1527980965255-d3b416303d12?w=150&h=150&fit=crop',
+    image: p2,
+    caption: 'Adventure awaits! 🏔️ #hiking #outdoors',
+    likes: 2456,
+    comments: 89,
+    timestamp: '6h ago'
+  },
+  {
+    id: 13,
+    username: 'mike_smith',
+    avatar: 'https://images.unsplash.com/photo-1527980965255-d3b416303d12?w=150&h=150&fit=crop',
+    image: p2,
+    caption: 'Adventure awaits! 🏔️ #hiking #outdoors',
+    likes: 2456,
+    comments: 89,
+    timestamp: '6h ago'
+  },
+  {
+    id: 14,
+    username: 'mike_smith',
+    avatar: 'https://images.unsplash.com/photo-1527980965255-d3b416303d12?w=150&h=150&fit=crop',
+    image: p2,
+    caption: 'Adventure awaits! 🏔️ #hiking #outdoors',
+    likes: 2456,
+    comments: 89,
+    timestamp: '6h ago'
+  },
+  {
+    id: 15,
+    username: 'mike_smith',
+    avatar: 'https://images.unsplash.com/photo-1527980965255-d3b416303d12?w=150&h=150&fit=crop',
+    image: p2,
+    caption: 'Adventure awaits! 🏔️ #hiking #outdoors',
+    likes: 2456,
+    comments: 89,
+    timestamp: '6h ago'
+  },
 ];
