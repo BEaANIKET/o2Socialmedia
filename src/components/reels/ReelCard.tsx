@@ -25,10 +25,17 @@ export default function ReelCard({ reel, isActive }: ReelCardProps) {
     }
   }, [isActive]);
 
-  const handleLike = () => {
+  const handleLike = (event: React.MouseEvent) => {
+    event.stopPropagation(); // Prevent bubbling
     setIsLiked(!isLiked);
     setLocalLikes((prev) => (isLiked ? prev - 1 : prev + 1));
   };
+
+  const handleSave = (event: React.MouseEvent) => {
+    event.stopPropagation(); // Prevent bubbling
+    setIsSaved(!isSaved);
+  };
+
 
   const handleReelsClick = () => {
     if (videoRef.current?.paused) {
@@ -41,14 +48,13 @@ export default function ReelCard({ reel, isActive }: ReelCardProps) {
   return (
     <div
       onClick={handleReelsClick}
-      className="relative h-[100dvh] w-full snap-start bg-black">
+      className=" reel relative z-10 h-full w-full snap-start bg-black overflow-hidden ">
       {/* Video */}
       <video
-
         ref={videoRef}
         key={`${reel.id}-${isActive}`}
         src={reel.video}
-        className="absolute inset-0 w-full h-full"
+        className="  w-full h-full "
         autoPlay={isActive}
         loop
         playsInline
@@ -57,7 +63,7 @@ export default function ReelCard({ reel, isActive }: ReelCardProps) {
 
 
       {/* Overlay */}
-      <div className="absolute inset-0 bg-gradient-to-b from-black/20 via-transparent to-black/60">
+      <div className="absolute inset-0 bottom-12 top-0 ">
         {/* Top Bar */}
         <div className="absolute top-0 left-0 right-0 p-4">
           <h2 className="text-white text-lg font-semibold">Reels</h2>
@@ -118,7 +124,7 @@ export default function ReelCard({ reel, isActive }: ReelCardProps) {
           </button>
 
           <button
-            onClick={() => setIsSaved(!isSaved)}
+            onClick={handleSave}
             className="flex flex-col items-center"
             aria-label={isSaved ? 'Unsave' : 'Save'}
           >

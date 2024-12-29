@@ -9,8 +9,10 @@
 
 /* Hide scrollbar for IE, Edge and Firefox */
 .scrollbar-hide {
-  -ms-overflow-style: none;  /* IE and Edge */
-  scrollbar-width: none;  /* Firefox */
+  -ms-overflow-style: none;
+  /* IE and Edge */
+  scrollbar-width: none;
+  /* Firefox */
 }
 
 /* Prevent text selection */
@@ -19,4 +21,24 @@
   -moz-user-select: none;
   -ms-user-select: none;
   user-select: none;
+}
+
+.scroll-container {
+  scroll-snap-type: y mandatory;
+  /* Vertical snapping enabled */
+}
+
+.reel {
+  scroll-snap-align: start;
+  /* Align each reel at the start of the viewport */
+}
+
+.maincontainer {
+  column-count: 3;
+  column-gap: 15px;
+  row-gap: 15px;
+}
+
+.containeritem {
+  margin-bottom: 15px;
 }

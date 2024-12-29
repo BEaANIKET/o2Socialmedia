@@ -6,7 +6,7 @@ export default function Sidebar() {
   const location = useLocation();
 
   return (
-    <div className="fixed bottom-0 left-0 w-full bg-white dark:bg-gray-800 border-t dark:border-gray-700 md:top-0 md:w-16 lg:w-64 md:h-screen md:border-r z-50">
+    <div className="fixed bottom-0 z-20 left-0 w-full bg-white dark:bg-gray-800 border-t dark:border-gray-700 md:top-0 md:w-16 lg:w-64 md:h-screen md:border-r ">
       <div className="flex justify-around md:flex-col  h-full md:justify-start md:items-center lg:items-start md:p-4 md:space-y-6">
         <div className="hidden lg:block p-4">
           <h1 className="text-xl font-bold dark:text-white">Indimart</h1>
@@ -46,7 +46,7 @@ function NavItem({ to, icon, label, active = false }: NavItemProps) {
   return (
     <Link
       to={to}
-      className={`flex items-center gap-2 p-4 cursor-pointer hover:bg-gray-100 dark:hover:bg-gray-700 rounded-lg ${active ? 'font-bold' : ''
+      className={`flex items-center w-full justify-center lg:justify-start gap-2 p-4 cursor-pointer hover:bg-gray-100 dark:hover:bg-gray-700 rounded-lg ${active ? 'font-bold' : ''
         }`}
     >
       <span className={`text-xl ${active ? 'text-black dark:text-white' : 'text-gray-700 dark:text-gray-300'}`}>

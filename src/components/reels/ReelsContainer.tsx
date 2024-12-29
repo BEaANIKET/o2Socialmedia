@@ -1,8 +1,7 @@
-import { useState, useCallback } from 'react';
+import { useState, useCallback, Suspense } from 'react';
 import { generateReels } from '../../data/reelsData';
 import { useIntersectionObserver } from '../../hooks/useIntersectionObserver';
 import ReelCard from './ReelCard';
-import { FixedSizeList as List } from 'react-window';
 
 const PAGE_SIZE = 5;
 
@@ -12,13 +11,15 @@ export default function ReelsContainer() {
   const [activeIndex, setActiveIndex] = useState(0);
 
   const loadMoreReels = useCallback(() => {
+    console.log("need more reels ");
+
     if (!hasMore) return;
 
     const newReels = generateReels(reels.length, PAGE_SIZE);
 
     if (newReels.length < PAGE_SIZE) setHasMore(false);
 
-    setReels(prev => [...prev, ...newReels]);
+    setReels((prev) => [...prev, ...newReels]);
   }, [reels.length, hasMore]);
 
   const observerRef = useIntersectionObserver(loadMoreReels);
@@ -33,46 +34,29 @@ export default function ReelsContainer() {
     [activeIndex]
   );
 
-  const renderReel = useCallback(
-    ({ index, style }: { index: number; style: React.CSSProperties }) => {
-      const reel = reels[index];
-      if (!reel) return null;
-
-      return (
-        <div style={style} className="snap-start">
-          <ReelCard reel={reel} isActive={index === activeIndex} />
-        </div>
-      );
-    },
-    [reels, activeIndex]
-  );
-
   return (
-    <div className="h-full w-full max-w-md m-auto overflow-hidden">
-      <List
-        className="overflow-y-scroll snap-y snap-mandatory scrollbar-hide"
-        height={1000}
-        itemCount={reels.length + 1}
-        itemSize={window.innerHeight}
-        width="100%"
-        onScroll={({ scrollOffset }) => handleScroll(scrollOffset)}
+    <div className="h-[100dvh] w-full max-w-md m-auto overflow-hidden">
+      <div
+        style={{ scrollSnapAlign: 'start', scrollBehavior: "smooth" }}
+        className="h-full scroll-container scrollbar-hide overflow-y-scroll snap-mandatory snap-y"
+        onScroll={(e) => handleScroll(e.currentTarget.scrollTop)}
       >
-        {({ index, style }) => {
-          if (index === reels.length) {
-            return hasMore ? (
-              <div ref={observerRef} style={style} className="h-16 flex items-center justify-center">
-                <p className="text-gray-500">Loading more reels...</p>
-              </div>
-            ) : (
-              <div style={style} className="h-16 flex items-center justify-center">
-                <p className="text-gray-500">No more reels!</p>
-              </div>
-            );
-          }
-
-          return renderReel({ index, style });
-        }}
-      </List>
+        <Suspense fallback={<div>Loading reels...</div>}>
+          {reels.map((reel, index) => (
+            <ReelCard isActive={activeIndex === index} key={index} reel={reel} />
+          ))}
+        </Suspense>
+        <div
+          ref={observerRef}
+          className="relative z-10 h-full w-full snap-start bg-black overflow-hidden "
+        >
+          {hasMore ? (
+            <p className="text-gray-500">Loading more reels...</p>
+          ) : (
+            <p className="text-gray-500">No more reels!</p>
+          )}
+        </div>
+      </div>
     </div>
   );
 }
