@@ -2,13 +2,14 @@ import { Link } from 'react-router-dom'
 import React, { useState } from "react";
 import { useNavigate } from 'react-router-dom';
 import logo from '../../public/file_svg.png';
+import axios from 'axios';
 
 const SignupPage = () => {
     const [formData, setFormData] = useState({
         full_name: '',
         email: '',
         password: '',
-        otp: '',
+        otp: '14434',
     });
     const [isLoading, setIsLoading] = useState(false);
     const navigation = useNavigate();
@@ -29,6 +30,22 @@ const SignupPage = () => {
 
     const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
+        console.log(formData);
+
+        try {
+            const response = await axios.post('http://localhost:5000/api/auth/register', {
+                fullname: formData.full_name,
+                email: formData.email,
+                password: formData.password,
+                phone: '1111111111',
+                role: 'user'
+            })
+
+            console.log(response.data);
+        } catch (error) {
+            console.log(error?.response?.data || error.message);
+        }
+
     }
 
     const handleClick = async () => {
@@ -89,7 +106,7 @@ const SignupPage = () => {
 
                     <div className='flex flex-col gap-2'>
                         {
-                            true ? (
+                            false ? (
                                 <button
                                     type="submit"
                                     className={`p-2 rounded-md bg-slate-900 text-white font-semibold active:scale-95`

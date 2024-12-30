@@ -9,7 +9,7 @@ export default function Sidebar() {
   return (
     <>
 
-      <img className=' w-24 scale-110 absolute z-50 top-6 left-4 md:hidden ' src={applogo} alt="" />
+
 
       <div className="fixed bottom-0 z-20 left-0 w-full bg-white dark:bg-gray-800 border-t dark:border-gray-700 md:top-0 md:w-16 lg:w-64 md:h-screen md:border-r ">
 
@@ -22,8 +22,8 @@ export default function Sidebar() {
           <NavItem to="/search" icon={<Search />} label="Search" />
           <NavItem to="/explore" icon={<Compass />} label="Explore" />
           <NavItem to="/reels" icon={<Film />} label="Reels" active={location.pathname === '/reels'} />
-          {/* <NavItem to="/messages" icon={<MessageCircle />} label="Messages" /> */}
-          <NavItem to="/notifications" icon={<Heart />} label="Notifications" />
+          <NavItem to="/messages" icon={<MessageCircle />} label="Messages" />
+          {/* <NavItem to="/notifications" icon={<Heart />} label="Notifications" /> */}
           <NavItem to="/profile" icon={<User />} label="Profile" />
           {/* <NavItem to="/create" icon={<PlusSquare />} label="Create" /> */}
 
