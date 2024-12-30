@@ -24,6 +24,7 @@ export default function Sidebar() {
           <NavItem to="/reels" icon={<Film />} label="Reels" active={location.pathname === '/reels'} />
           {/* <NavItem to="/messages" icon={<MessageCircle />} label="Messages" /> */}
           <NavItem to="/notifications" icon={<Heart />} label="Notifications" />
+          <NavItem to="/profile" icon={<User />} label="Profile" />
           {/* <NavItem to="/create" icon={<PlusSquare />} label="Create" /> */}
 
           <div className=' md:w-full w-fit flex lg:flex-row md:flex-col gap-4 justify-between items-center '>
