@@ -1,5 +1,5 @@
 import { Link, useLocation } from 'react-router-dom';
-import { Home, Search, Compass, Film, Heart, PlusSquare, MessageCircle, Menu } from 'lucide-react';
+import { Home, Search, Compass, Film, Heart, PlusSquare, MessageCircle, Menu, User } from 'lucide-react';
 import ThemeToggle from './layout/ThemeToggle';
 
 export default function Sidebar() {
@@ -18,6 +18,7 @@ export default function Sidebar() {
         <NavItem to="/reels" icon={<Film />} label="Reels" active={location.pathname === '/reels'} />
         {/* <NavItem to="/messages" icon={<MessageCircle />} label="Messages" /> */}
         <NavItem to="/notifications" icon={<Heart />} label="Notifications" />
+        <NavItem to="/profile" icon={<User />} label="Profile" />
         {/* <NavItem to="/create" icon={<PlusSquare />} label="Create" /> */}
 
         <div className=' md:w-full w-fit flex lg:flex-row md:flex-col gap-4 justify-between items-center '>
