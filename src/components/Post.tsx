@@ -47,39 +47,22 @@ export default function Post({ post }: PostProps) {
 
   const mediaType = identifyMediaType(post.image);
 
-  const videoRef = useRef<HTMLVideoElement>(null);
-
-  const observerRef = useIntersectionObserver(() => {
-    if (videoRef.current && videoRef.current.paused) {
-      setIsPlay(true);
-    }
-  });
+  const observerRef = useIntersectionObserver(() => setIsPlay(true), () => setIsPlay(false), { threshold: 0.5 });
 
   useEffect(() => {
-    const observer = new IntersectionObserver(([entry]) => {
-      if (entry.isIntersecting) {
-        setIsPlay(true);
-      } else {
-        setIsPlay(false);
-      }
-    }, { threshold: 0.5 });
-
-    if (videoRef.current) {
-      observer.observe(videoRef.current);
-    }
-
-    return () => observer.disconnect();
-  }, []);
-
-  useEffect(() => {
-    if (videoRef.current) {
+    if (observerRef.current) {
       if (isPlay) {
-        videoRef.current.play();
+        observerRef.current.play();
       } else {
-        videoRef.current.pause();
+        observerRef.current.pause();
       }
     }
   }, [isPlay]);
+
+  // Handle double click to like
+  const handleDoubleClick = () => {
+    setIsLiked(!isLiked);
+  };
 
   return (
     <div className="bg-white dark:bg-gray-800 border dark:border-gray-700 rounded-lg mb-4">
@@ -99,11 +82,12 @@ export default function Post({ post }: PostProps) {
 
       <div className="relative">
         {mediaType === 'video' ? (
-          <div className=' relative ' >
+          <div onClick={() => setIsPlay(false)} onDoubleClick={handleDoubleClick} className=' relative ' >
             <video
-              ref={videoRef}
+              ref={observerRef}
               className="w-full"
               muted={isMuted}
+              loop
             >
               <source src={post.image} type="video/mp4" />
               Your browser does not support the video tag.
@@ -124,17 +108,14 @@ export default function Post({ post }: PostProps) {
           <img src={post.image} alt="Post Media" className="w-full object-cover" />
         )}
 
-        <div className="absolute inset-0 flex items-center justify-center opacity-0 hover:opacity-100 transition-opacity duration-200">
+        {/* <div className="absolute inset-0 flex items-center justify-center opacity-0 hover:opacity-100 transition-opacity duration-200">
           <button
             className="transform scale-150 transition-transform duration-200"
-            onClick={() => setIsLiked(!isLiked)}
+            onDoubleClick={handleDoubleClick} // Change to double click
           >
             <Heart className={`w-16 h-16 ${isLiked ? 'text-red-500 fill-current' : 'text-white'}`} />
           </button>
-        </div>
-
-
-
+        </div> */}
       </div>
 
       <div className="p-4">
