@@ -4,7 +4,8 @@ import { store } from './store/store';
 import { useSelector } from 'react-redux';
 import { RootState } from './store/store';
 import Layout from './components/layout/Layout';
-import { Suspense, lazy } from 'react';
+import { Suspense, lazy, useEffect } from 'react';
+import axios from 'axios';
 
 const Feed = lazy(() => import('./components/Feed'));
 const ReelsPage = lazy(() => import('./pages/ReelsPage'));
@@ -17,6 +18,28 @@ const SignupPage = lazy(() => import('./pages/SignupPage'));
 
 function AppContent() {
   const isDarkMode = useSelector((state: RootState) => state.theme.isDarkMode);
+
+  useEffect(() => {
+    const getUser = async () => {
+      try {
+        const response = await axios.get('http://localhost:5000/api/auth/user',
+          {
+            headers: {
+              'Authorization': 'Bearer ' + localStorage.getItem('token'),
+              'Content-Type': 'application/json'
+            },
+          }
+        )
+        console.log(response);
+
+      } catch (error) {
+        console.log(error?.response?.data || error.message);
+      }
+    }
+
+    getUser();
+  }, [])
+
 
   return (
     <div className={isDarkMode ? 'dark' : ''}>

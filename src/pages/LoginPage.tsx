@@ -3,6 +3,7 @@ import { useDispatch } from 'react-redux';
 import { Link, useNavigate } from 'react-router-dom';
 import { login } from '../store/slices/authSlice';
 import logo from '../../public/file_svg.png';
+import axios from 'axios';
 
 export default function LoginPage() {
   const [email, setEmail] = useState('');
@@ -10,16 +11,30 @@ export default function LoginPage() {
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
-  const handleLogin = (e: React.FormEvent) => {
+  const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault();
+    console.log(email, password);
 
-    dispatch(login({
-      id: '1',
-      username: 'johndoe',
-      email,
-      avatar: 'https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?w=150&h=150&fit=crop'
-    }));
-    navigate('/');
+    try {
+
+      const response = await axios.post('http://localhost:5000/api/auth/login', {
+        email,
+        password
+      })
+
+      console.log(response.data);
+      localStorage.setItem('token', response.data.token)
+
+      dispatch(login({
+        id: '1',
+        username: 'johndoe',
+        email,
+        avatar: 'https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?w=150&h=150&fit=crop'
+      }));
+      navigate('/');
+    } catch (error) {
+      console.log(error?.response?.data || error.message);
+    }
   };
 
   return (
@@ -29,7 +44,7 @@ export default function LoginPage() {
         <div className="flex flex-col items-center">
           <img src={logo} alt='logo' className='h-20 w-20 object-cover' />
           <h2 className="mt-6 text-3xl font-extrabold text-gray-900 dark:text-white">
-          Sign in to your account
+            Sign in to your account
           </h2>
         </div>
 
@@ -78,7 +93,7 @@ export default function LoginPage() {
             <button
               type="button"
               className="p-1 rounded-md active:scale-95 border shadow-sm font-semibold"
-              // onClick={handleClick}
+            // onClick={handleClick}
             >
               Google
             </button>
