@@ -1,7 +1,7 @@
 import { Link, useLocation } from 'react-router-dom';
 import { Home, Search, Compass, Film, Heart, PlusSquare, MessageCircle, Menu, User } from 'lucide-react';
 import ThemeToggle from './layout/ThemeToggle';
-import applogo from '../../public/assets/applogo.png'
+import applogo from '/assets/applogo.png'
 
 export default function Sidebar() {
   const location = useLocation();

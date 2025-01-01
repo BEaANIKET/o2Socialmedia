@@ -1,5 +1,5 @@
-import { PROFILE_DATA } from "../../data/constants"; 
-import cover from  "../../../public/assets/r8.mp4"
+import { PROFILE_DATA } from "../../data/constants";
+import cover from "/assets/r8.mp4"
 import CoverVideo from "./CoverVideo";
 import ProfileDetails from "./ProfileDetails";
 
@@ -7,10 +7,10 @@ export default function ProfileHeader() {
 
   return (
     <div className="relative">
-    <CoverVideo
+      <CoverVideo
         src={cover}
         poster="https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?w=1200&h=400&fit=crop"
-    />
+      />
 
       {/* Profile Info Bar */}
       <div className="max-w-6xl mx-auto px-4">

@@ -6,6 +6,7 @@ import { RootState } from './store/store';
 import Layout from './components/layout/Layout';
 import { Suspense, lazy, useEffect } from 'react';
 import axios from 'axios';
+import MessagesPage from './pages/MessagePage';
 
 const Feed = lazy(() => import('./components/Feed'));
 const ReelsPage = lazy(() => import('./pages/ReelsPage'));
@@ -36,10 +37,8 @@ function AppContent() {
         console.log(error?.response?.data || error.message);
       }
     }
-
     getUser();
   }, [])
-
 
   return (
     <div className={isDarkMode ? 'dark' : ''}>
@@ -55,6 +54,7 @@ function AppContent() {
               <Route path="/search" element={<SearchPage />} />
               <Route path="/explore" element={<ExplorePage />} />
               <Route path="/profile" element={<Profile />} />
+              <Route path="/messages" element={<MessagesPage />} />
             </Route>
           </Routes>
         </Suspense>

@@ -27,8 +27,8 @@ export const stories = [
 ];
 
 
-import p1 from '../../public/assets/r1.mp4'
-import p2 from '../../public/assets/r6.mp4'
+import p1 from '/assets/r1.mp4'
+import p2 from '/assets/r6.mp4'
 
 export const posts = [
   {
