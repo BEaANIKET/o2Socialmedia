@@ -7,6 +7,7 @@ import Layout from './components/layout/Layout';
 import { Suspense, lazy, useEffect } from 'react';
 import axios from 'axios';
 import MessagesPage from './pages/MessagePage';
+import AddProduct from './pages/AddProduct';
 
 const Feed = lazy(() => import('./components/Feed'));
 const ReelsPage = lazy(() => import('./pages/ReelsPage'));
@@ -34,7 +35,7 @@ function AppContent() {
         console.log(response);
 
       } catch (error) {
-        console.log(error?.response?.data || error.message);
+        console.log(error);
       }
     }
     getUser();
@@ -55,6 +56,7 @@ function AppContent() {
               <Route path="/explore" element={<ExplorePage />} />
               <Route path="/profile" element={<Profile />} />
               <Route path="/messages" element={<MessagesPage />} />
+              <Route path="/add-product" element={<AddProduct />} />
             </Route>
           </Routes>
         </Suspense>

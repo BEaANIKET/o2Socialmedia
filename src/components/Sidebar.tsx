@@ -9,7 +9,7 @@ export default function Sidebar() {
   return (
     <>
       <div className="fixed bottom-0 z-20 left-0 w-full bg-white dark:bg-gray-800 border-t dark:border-gray-700 md:top-0 md:w-16 lg:w-64 md:h-screen md:border-r ">
-
+      <div className="fixed bottom-0 z-20 left-0 w-full overflow-scroll bg-white dark:bg-gray-800 border-t dark:border-gray-700 md:top-0 md:w-16 lg:w-64 md:h-screen md:border-r ">
         <div className="flex justify-around md:flex-col  h-full md:justify-start md:items-center lg:items-start md:p-4 md:space-y-6">
           <div className="hidden lg:block p-4">
             <img className=' w-20 scale-110 ' src={applogo} alt="" />
@@ -21,8 +21,8 @@ export default function Sidebar() {
           <NavItem to="/reels" icon={<Film />} label="Reels" active={location.pathname === '/reels'} />
           <NavItem to="/messages" icon={<MessageCircle />} label="Messages" />
           {/* <NavItem to="/notifications" icon={<Heart />} label="Notifications" /> */}
+          <NavItem to="/add-product" icon={<PlusSquare />} label="Create" />
           <NavItem to="/profile" icon={<User />} label="Profile" />
-          {/* <NavItem to="/create" icon={<PlusSquare />} label="Create" /> */}
 
           <div className=' md:w-full w-fit flex lg:flex-row md:flex-col gap-4 justify-between items-center '>
             <div className=' flex items-center justify-center'>
