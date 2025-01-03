@@ -9,7 +9,6 @@ const useGetProfile = () => {
     const [loading, setLoadin] = useState(false)
     const [error, setError] = useState(null)
     const user = useSelector((state) => state?.auth?.user);
-    console.log(user);
     const dispatch = useDispatch();
 
     useEffect(() => {
