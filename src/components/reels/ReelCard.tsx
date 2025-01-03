@@ -1,21 +1,44 @@
-import { useEffect, useRef, useState } from 'react';
-import { Heart, MessageCircle, Send, Bookmark, Music2, VideoIcon } from 'lucide-react';
-import type { Reel } from '../../data/reelsData';
+import { useEffect, useState } from 'react';
+import { Heart, MessageCircle, Send, Bookmark, Music2 } from 'lucide-react';
 import { useIntersectionObserver } from '../../hooks/useIntersectionObserver';
+import useHandleReelsLikes from '../../hooks/reels/useHandleLikes';
 
 interface ReelCardProps {
-  reel: Reel;
+  reel: {
+    _id: string;
+    userId: string;
+    file: {
+      url: string;
+      fileType: string;
+      publicId: string;
+    };
+    caption: string;
+    price: number;
+    category: string;
+    location: string;
+    likes: number;
+    createdAt: string;
+    updatedAt: string;
+    user: {
+      _id: string;
+      fullName: string;
+      profilePicture: string;
+    };
+  };
 }
 
 export default function ReelCard({ reel }: ReelCardProps) {
-  const [isLiked, setIsLiked] = useState(false);
+  // const [isLiked, setIsLiked] = useState(false);
   const [isSaved, setIsSaved] = useState(false);
-  const [localLikes, setLocalLikes] = useState(reel.likes);
   const [isVideoPlay, setIsVideoPlay] = useState(false);
 
-  const videoRef = useIntersectionObserver(() => setIsVideoPlay(true), () => setIsVideoPlay(false), { threshold: 0.5 });
+  const { isLiked, likeCount, likePost } = useHandleReelsLikes(reel._id)
 
-
+  const videoRef = useIntersectionObserver(
+    () => setIsVideoPlay(true),
+    () => setIsVideoPlay(false),
+    { threshold: 0.5 }
+  );
 
   useEffect(() => {
     if (videoRef.current) {
@@ -26,19 +49,17 @@ export default function ReelCard({ reel }: ReelCardProps) {
         videoRef.current.pause();
       }
     }
-  }, [isVideoPlay])
+  }, [isVideoPlay]);
 
-  const handleLike = (event: React.MouseEvent) => {
-    event.stopPropagation(); // Prevent bubbling
-    setIsLiked(!isLiked);
-    setLocalLikes((prev) => (isLiked ? prev - 1 : prev + 1));
+  const handleLike = async (event: React.MouseEvent) => {
+    event.stopPropagation();
+    await likePost()
   };
 
   const handleSave = (event: React.MouseEvent) => {
-    event.stopPropagation(); // Prevent bubbling
+    event.stopPropagation();
     setIsSaved(!isSaved);
   };
-
 
   const handleReelsClick = () => {
     if (videoRef.current?.paused) {
@@ -46,57 +67,45 @@ export default function ReelCard({ reel }: ReelCardProps) {
     } else {
       videoRef.current?.pause();
     }
-  }
+  };
 
   return (
     <div
       onClick={handleReelsClick}
-      className=" reel relative z-10 h-full w-full snap-start bg-black overflow-hidden ">
+      className="reel relative z-10 h-full w-full snap-start bg-black overflow-hidden"
+    >
       {/* Video */}
       <video
         ref={videoRef}
-        key={reel.id}
-        src={reel.video}
-        className="  w-full h-full "
+        key={reel._id}
+        src={reel.file.url}
+        className="w-full h-full"
         loop
         playsInline
       />
 
       {/* Overlay */}
-      <div className="absolute inset-0 bottom-12 top-0 ">
-        {/* Top Bar */}
-        <div className="absolute top-0 left-0 right-0 p-4">
-          <h2 className="text-white text-lg font-semibold">Reels</h2>
-        </div>
-
+      <div className="absolute inset-0 bottom-12 top-0">
         {/* Bottom Content */}
         <div className="absolute bottom-0 left-0 right-12 p-4">
           {/* User Info */}
           <div className="flex items-center space-x-2 mb-3">
             <img
-              src={reel.avatar}
-              alt={`${reel.username}'s avatar`}
+              src={reel.user.profilePicture || 'https://via.placeholder.com/40'}
+              alt={`${reel.user.fullName}'s avatar`}
               className="w-8 h-8 rounded-full border border-white"
               loading="lazy"
             />
-            <span className="text-white font-medium text-sm">{reel.username}</span>
-            {!reel.isFollowing && (
-              <button
-                className="ml-2 px-3 py-1 text-xs text-white border border-white rounded-md"
-                aria-label={`Follow ${reel.username}`}
-              >
-                Follow
-              </button>
-            )}
+            <span className="text-white font-medium text-sm">{reel.user.fullName || 'Unknown User'}</span>
           </div>
 
           {/* Caption */}
-          <p className="text-white text-sm mb-2 line-clamp-2 overflow-hidden">{reel.caption}</p>
+          <p className="text-white text-sm mb-2 line-clamp-2">{reel.caption}</p>
 
           {/* Music */}
           <div className="flex items-center space-x-2 text-white">
             <Music2 className="w-3 h-3" />
-            <span className="text-xs">{reel.music}</span>
+            <span className="text-xs">{reel.category}</span>
           </div>
         </div>
 
@@ -111,12 +120,12 @@ export default function ReelCard({ reel }: ReelCardProps) {
               className={`w-6 h-6 transition-colors ${isLiked ? 'text-red-500 fill-current' : 'text-white'
                 }`}
             />
-            <span className="text-white text-xs mt-1">{localLikes.toLocaleString()}</span>
+            <span className="text-white text-xs mt-1">{likeCount.toLocaleString()}</span>
           </button>
 
           <button className="flex flex-col items-center" aria-label="Comment">
             <MessageCircle className="w-6 h-6 text-white" />
-            <span className="text-white text-xs mt-1">{reel.comments.toLocaleString()}</span>
+            <span className="text-white text-xs mt-1">0</span>
           </button>
 
           <button className="flex flex-col items-center" aria-label="Share">

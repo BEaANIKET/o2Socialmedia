@@ -1,27 +1,48 @@
-import { useState, useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import api from '../../services/api/axiosConfig';
+import { useDispatch, useSelector } from 'react-redux';
+import { setPost } from '../../store/slices/postSlices';
 
 const useGetPosts = () => {
-    const [posts, setPosts] = useState([]);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
+    const posts = useSelector((state) => state?.post?.posts);
+    const dispatch = useDispatch();
 
     useEffect(() => {
         const fetchPosts = async () => {
+            setLoading(true);
             try {
                 const response = await api.get('/post/get');
-                setPosts(response.data.posts);
-                setLoading(false);
+                dispatch(setPost({
+                    type: 'SET_POST', payload: response.data.posts
+                }));
+                console.log(response.data.posts);
             } catch (err) {
-                setError(err.response?.data?.message);
+                setError(err.response?.data?.message || "An error occurred");
+            } finally {
                 setLoading(false);
             }
         };
 
-        fetchPosts();
-    }, []);
+        if (!posts?.length) {
+            fetchPosts();
+        } else {
+            setLoading(false);
+        }
+    }, [posts?.length, dispatch]);
 
-    return { posts, loading, error };
+
+    const loadMorePosts = async () => {
+        try {
+            const response = await api.get('/post/get');
+            dispatch(setPost({ type: 'ADD_POST', payload: response.data.posts }));
+        } catch (err) {
+            setError(err.response?.data?.message || "An error occurred");
+        }
+    }
+
+    return { loading, error, posts, loadMorePosts };
 };
 
 export default useGetPosts;

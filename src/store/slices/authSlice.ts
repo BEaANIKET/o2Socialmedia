@@ -15,22 +15,22 @@ interface User {
 const initialState: AuthState = {
   isAuthenticated: false,
   user: null,
+  posts: null
 };
 
 const authSlice = createSlice({
   name: 'auth',
   initialState,
   reducers: {
-    login: (state, action: PayloadAction<User>) => {
-      state.isAuthenticated = true;
-      state.user = action.payload;
+    setUserProfile: (state, actions) => {
+      state.user = actions.payload;
+      state.isAuthenticated = !!state.user
     },
-    logout: (state) => {
-      state.isAuthenticated = false;
-      state.user = null;
-    },
+    setUserPost: (state, actions) => {
+      state.posts = actions.payload;
+    }
   },
 });
 
-export const { login, logout } = authSlice.actions;
+export const { setUserProfile, setUserPost } = authSlice.actions;
 export default authSlice.reducer;

@@ -33,21 +33,17 @@ const identifyMediaType = (fileType: string) => {
 };
 
 export default function Post({ post }: PostProps) {
-  const [isPlay, setIsPlay] = useState(false);
+  const [isPlay, setIsPlay] = useState(true);
   const [isSaved, setIsSaved] = useState(false);
   const [showComments, setShowComments] = useState(false);
   const [isMuted, setIsMuted] = useState(false);
-  const { likes, isLiked, likePost } = useHandleLikes(post._id);
+  const { likeCount: likes, isLiked, likePost } = useHandleLikes(post._id);
 
   const observerRef = useIntersectionObserver(
     () => setIsPlay(true),
     () => setIsPlay(false),
     { threshold: 0.5 }
   );
-
-  console.log(isLiked);
-  console.log(likes);
-
 
   useEffect(() => {
     if (observerRef.current) {
@@ -77,14 +73,14 @@ export default function Post({ post }: PostProps) {
         </button>
       </div>
 
-      <div className="relative">
+      <div className="relative ">
         {mediaType === 'video' ? (
           <div
             onClick={() => setIsPlay(false)}
             onDoubleClick={handleLike}
-            className="relative min-w-96 min-h-64"
+            className="relative min-w-full sm:min-w-96  "
           >
-            <video className="w-full" muted={isMuted} loop autoPlay>
+            <video ref={observerRef} className=" w-full  " muted={isMuted} loop autoPlay={isPlay}>
               <source src={post.file.url} type={`video/${post.file.fileType}`} />
               Your browser does not support the video tag.
             </video>

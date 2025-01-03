@@ -1,5 +1,7 @@
 import { useState, useEffect } from 'react';
 import api from '../services/api/axiosConfig';
+import { useDispatch } from 'react-redux';
+import { setUserProfile } from '../store/slices/authSlice';
 
 interface User {
     id: string;
@@ -17,31 +19,17 @@ interface RegisterResponse {
 }
 
 interface UseAuthReturn {
-    user: User | null;
     loading: boolean;
     error: string | null;
     login: (email: string, password: string) => Promise<User | null>;
     register: (name: string, email: string, password: string) => Promise<boolean>;
     logout: () => void;
-    isAuthenticated: boolean;
 }
 
 const useAuth = (): UseAuthReturn => {
-    const [user, setUser] = useState<User | null>(null);
     const [loading, setLoading] = useState<boolean>(true);
     const [error, setError] = useState<string | null>(null);
-
-    // Load user from localStorage on initial render
-    useEffect(() => {
-        const token = localStorage.getItem('token');
-        if (token) {
-            const storedUser = localStorage.getItem('user');
-            if (storedUser) {
-                setUser(JSON.parse(storedUser) as User);
-            }
-        }
-        setLoading(false);
-    }, []);
+    const dispatch = useDispatch()
 
     const login = async (email: string, password: string): Promise<User | null> => {
         setLoading(true);
@@ -51,7 +39,7 @@ const useAuth = (): UseAuthReturn => {
             const { token, user } = response.data;
 
             localStorage.setItem('token', token);
-            setUser(user);
+            dispatch(setUserProfile(user))
 
             return user;
         } catch (err: any) {
@@ -82,17 +70,15 @@ const useAuth = (): UseAuthReturn => {
     const logout = (): void => {
         localStorage.removeItem('token');
         localStorage.removeItem('user');
-        setUser(null);
+        dispatch(setUserProfile(null))
     };
 
     return {
-        user,
         loading,
         error,
         login,
         register,
         logout,
-        isAuthenticated: !!user,
     };
 };
 
