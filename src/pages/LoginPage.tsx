@@ -1,40 +1,27 @@
 import { useState } from 'react';
-import { useDispatch } from 'react-redux';
 import { Link, useNavigate } from 'react-router-dom';
-import { login } from '../store/slices/authSlice';
 import logo from '../../public/file_svg.png';
-import axios from 'axios';
+import useAuth from '../hooks/useAuth';
 
 export default function LoginPage() {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
-  const dispatch = useDispatch();
   const navigate = useNavigate();
+  const { login, loading, error } = useAuth();
+
 
   const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault();
     console.log(email, password);
-
-    try {
-
-      const response = await axios.post('http://localhost:5000/api/auth/login', {
-        email,
-        password
-      })
-
-      console.log(response.data);
-      localStorage.setItem('token', response.data.token)
-
-      dispatch(login({
-        id: '1',
-        username: 'johndoe',
-        email,
-        avatar: 'https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?w=150&h=150&fit=crop'
-      }));
+    const success = await login(email, password)
+    if (success) {
+      console.log(error);
       navigate('/');
-    } catch (error) {
-      console.log(error?.response?.data || error.message);
+    } else {
+
+      console.log(error);
     }
+
   };
 
   return (
@@ -72,12 +59,17 @@ export default function LoginPage() {
             </div>
           </div>
 
+          {
+            error && <div className="text-red-500 text-center w-full text-sm">{error}</div>
+          }
+
           <div>
             <button
+              disabled={loading}
               type="submit"
               className="group relative w-full flex justify-center py-2 px-4 border border-transparent text-sm font-medium rounded-md text-white bg-slate-900 hover:bg-slate-800 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-slate-900"
             >
-              Sign in
+              {loading ? 'Loading...' : 'Sign in'}
             </button>
 
 

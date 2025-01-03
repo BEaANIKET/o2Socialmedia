@@ -2,7 +2,7 @@ import { Link } from 'react-router-dom'
 import React, { useState } from "react";
 import { useNavigate } from 'react-router-dom';
 import logo from '../../public/file_svg.png';
-import axios from 'axios';
+import useAuth from '../hooks/useAuth';
 
 const SignupPage = () => {
     const [formData, setFormData] = useState({
@@ -11,9 +11,8 @@ const SignupPage = () => {
         password: '',
         otp: '14434',
     });
-    const [isLoading, setIsLoading] = useState(false);
     const navigation = useNavigate();
-    const [isOpen, setIsopen] = useState(false)
+    const { register, loading, error } = useAuth()
 
     const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         const { name, value } = e.target;
@@ -32,18 +31,16 @@ const SignupPage = () => {
         e.preventDefault();
         console.log(formData);
 
-        try {
-            const response = await axios.post('http://localhost:5000/api/auth/register', {
-                fullname: formData.full_name,
-                email: formData.email,
-                password: formData.password,
-                phone: '1111111111',
-                role: 'user'
-            })
+        const success = await register(
+            formData.full_name,
+            formData.email,
+            formData.password
+        )
 
-            console.log(response.data);
-        } catch (error) {
-            console.log(error?.response?.data || error.message);
+        if (success) {
+            navigation('/login')
+        } else {
+            console.log(error);
         }
 
     }
@@ -111,7 +108,7 @@ const SignupPage = () => {
                                     type="submit"
                                     className={`p-2 rounded-md bg-slate-900 text-white font-semibold active:scale-95`
                                     }
-                                    disabled={isLoading}
+                                    disabled={loading}
                                 >
                                     Send OTP
                                 </button>
@@ -120,7 +117,7 @@ const SignupPage = () => {
                                     type="submit"
                                     className={`p-2 rounded-md bg-slate-900 text-white font-semibold active:scale-95`
                                     }
-                                    disabled={isLoading}
+                                    disabled={loading}
                                 >
                                     sign up
                                 </button>

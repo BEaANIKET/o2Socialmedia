@@ -6,6 +6,7 @@ import { RootState } from './store/store';
 import Layout from './components/layout/Layout';
 import { Suspense, lazy, useEffect } from 'react';
 import axios from 'axios';
+import MessagesPage from './pages/MessagePage';
 import AddProduct from './pages/AddProduct';
 
 const Feed = lazy(() => import('./components/Feed'));
@@ -23,7 +24,7 @@ function AppContent() {
   useEffect(() => {
     const getUser = async () => {
       try {
-        const response = await axios.get('http://localhost:5000/api/auth/user',
+        const response = await axios.get('http://localhost:3000/api/auth/user',
           {
             headers: {
               'Authorization': 'Bearer ' + localStorage.getItem('token'),
@@ -37,10 +38,8 @@ function AppContent() {
         console.log(error);
       }
     }
-
     getUser();
   }, [])
-
 
   return (
     <div className={isDarkMode ? 'dark' : ''}>
@@ -56,6 +55,7 @@ function AppContent() {
               <Route path="/search" element={<SearchPage />} />
               <Route path="/explore" element={<ExplorePage />} />
               <Route path="/profile" element={<Profile />} />
+              <Route path="/messages" element={<MessagesPage />} />
               <Route path="/add-product" element={<AddProduct />} />
             </Route>
           </Routes>

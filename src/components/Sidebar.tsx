@@ -1,15 +1,15 @@
 import { Link, useLocation } from 'react-router-dom';
 import { Home, Search, Compass, Film, Heart, PlusSquare, MessageCircle, Menu, User } from 'lucide-react';
 import ThemeToggle from './layout/ThemeToggle';
-import applogo from '../../public/assets/applogo.png'
+import applogo from '/assets/applogo.png'
 
 export default function Sidebar() {
   const location = useLocation();
 
   return (
     <>
+      <div className="fixed bottom-0 z-20 left-0 w-full bg-white dark:bg-gray-800 border-t dark:border-gray-700 md:top-0 md:w-16 lg:w-64 md:h-screen md:border-r ">
       <div className="fixed bottom-0 z-20 left-0 w-full overflow-scroll bg-white dark:bg-gray-800 border-t dark:border-gray-700 md:top-0 md:w-16 lg:w-64 md:h-screen md:border-r ">
-
         <div className="flex justify-around md:flex-col  h-full md:justify-start md:items-center lg:items-start md:p-4 md:space-y-6">
           <div className="hidden lg:block p-4">
             <img className=' w-20 scale-110 ' src={applogo} alt="" />
