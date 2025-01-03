@@ -15,10 +15,6 @@ export default function PostGrid() {
             <Bookmark className="w-4 h-4" />
             <span className="text-sm font-medium">SAVED</span>
           </button>
-          <button className="flex items-center space-x-2 px-4 py-4 text-gray-500 hover:text-gray-900">
-            <Heart className="w-4 h-4" />
-            <span className="text-sm font-medium">LIKED</span>
-          </button>
         </div>
       </div>
 
