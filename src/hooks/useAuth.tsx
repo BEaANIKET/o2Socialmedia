@@ -27,26 +27,18 @@ interface UseAuthReturn {
 }
 
 const useAuth = (): UseAuthReturn => {
-    const [loading, setLoading] = useState<boolean>(true);
+    const [loading, setLoading] = useState<boolean>(false);
     const [error, setError] = useState<string | null>(null);
     const dispatch = useDispatch()
 
     const login = async (email: string, password: string): Promise<User | null> => {
-        setLoading(true);
-        setError(null);
         try {
             const response = await api.post<LoginResponse>('/auth/login', { email, password });
             const { token, user } = response.data;
-
             localStorage.setItem('token', token);
-            dispatch(setUserProfile(user))
-
             return user;
         } catch (err: any) {
-            setError(err.response?.data?.error || 'Login failed');
             return null;
-        } finally {
-            setLoading(false);
         }
     };
 
@@ -54,6 +46,11 @@ const useAuth = (): UseAuthReturn => {
     const register = async (fullName: string, email: string, password: string): Promise<boolean> => {
         setLoading(true);
         setError(null);
+        if (!fullName || !email || !password) {
+            setError('Please fill in all fields');
+            setLoading(false);
+            return false;
+        }
         try {
             await api.post<RegisterResponse>('/auth/register', { fullName, email, password });
             return true;
@@ -66,7 +63,6 @@ const useAuth = (): UseAuthReturn => {
         }
     };
 
-    // Logout function
     const logout = (): void => {
         localStorage.removeItem('token');
         localStorage.removeItem('user');

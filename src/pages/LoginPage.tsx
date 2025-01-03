@@ -7,19 +7,17 @@ export default function LoginPage() {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const navigate = useNavigate();
-  const { login, loading, error } = useAuth();
-
+  const { login } = useAuth();
+  const [loading, setLoading] = useState(false);
 
   const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault();
     console.log(email, password);
+    setLoading(true);
     const success = await login(email, password)
+    setLoading(false);
     if (success) {
-      console.log(error);
       navigate('/');
-    } else {
-
-      console.log(error);
     }
 
   };
@@ -58,10 +56,6 @@ export default function LoginPage() {
               />
             </div>
           </div>
-
-          {
-            error && <div className="text-red-500 text-center w-full text-sm">{error}</div>
-          }
 
           <div>
             <button

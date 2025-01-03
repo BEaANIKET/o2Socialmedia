@@ -21,25 +21,25 @@ const SignupPage = lazy(() => import('./pages/SignupPage'));
 function AppContent() {
   const isDarkMode = useSelector((state: RootState) => state.theme.isDarkMode);
 
-  useEffect(() => {
-    const getUser = async () => {
-      try {
-        const response = await axios.get('http://localhost:3000/api/auth/user',
-          {
-            headers: {
-              'Authorization': 'Bearer ' + localStorage.getItem('token'),
-              'Content-Type': 'application/json'
-            },
-          }
-        )
-        console.log(response);
+  // useEffect(() => {
+  //   const getUser = async () => {
+  //     try {
+  //       const response = await axios.get('http://localhost:3000/api/auth/user',
+  //         {
+  //           headers: {
+  //             'Authorization': 'Bearer ' + localStorage.getItem('token'),
+  //             'Content-Type': 'application/json'
+  //           },
+  //         }
+  //       )
+  //       console.log(response);
 
-      } catch (error) {
-        console.log(error);
-      }
-    }
-    getUser();
-  }, [])
+  //     } catch (error) {
+  //       console.log(error);
+  //     }
+  //   }
+  //   getUser();
+  // }, [])
 
   return (
     <div className={isDarkMode ? 'dark' : ''}>
